@@ -185,10 +185,10 @@ h1 {
 
 .timetable-container {
     position: relative;
-    overflow: hidden;
+    overflow: visible; /* Changed from hidden to allow content to be fully visible */
     width: 100%;
-    min-height: 300px;
-    margin-bottom: 10px;
+    min-height: 450px; /* Increased from 300px to accommodate all classes */
+    margin-bottom: 5px;
 }
 
 .timetable {
@@ -201,6 +201,7 @@ h1 {
     opacity: 0;
     padding: 0 10px;
     box-sizing: border-box;
+    min-height: 450px; /* Match container height */
 }
 
 .timetable.active {
@@ -229,7 +230,7 @@ table {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: var(--table-bg);
     border-radius: 8px;
-    overflow: hidden;
+    overflow: visible; /* Changed from hidden to ensure content visibility */
 }
 
 table td {
@@ -319,24 +320,34 @@ th {
 }
 
 @media screen and (max-width: 480px) {
-
-    th,td {
-        padding: 8px 4px;
-    }
-
     .timetable-container {
-        min-height: 300px;
+        min-height: 450px; /* Ensure consistent height on mobile */
     }
 
-    .theme-toggle {
-        padding: 8px 16px;
-        font-size: 12px;
+    table {
+        font-size: 11px; /* Slightly reduce font size to fit content */
+    }
+
+    th, td {
+        padding: 6px 4px; /* Slightly reduce padding */
+        height: auto; /* Allow cells to expand as needed */
+    }
+
+    /* Ensure table rows don't get cut off */
+    tr {
+        height: auto;
+        min-height: 30px;
     }
 }
 
+/* Additional mobile optimization */
 @media screen and (max-width: 360px) {
-    .day-buttons button {
-        min-width: 70px;
-        padding: 8px 4px;
+    .timetable-container {
+        min-height: 480px; /* Even more height for very small screens */
+    }
+    
+    table td {
+        word-break: break-word; /* Better text wrapping for small screens */
+        font-size: 10px; /* Further reduce font size for very small screens */
     }
 }
