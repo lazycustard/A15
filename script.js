@@ -38,6 +38,12 @@ function checkClasses() {
     const actualDay = days[now.getDay()];
     const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
+    // Check if it's Sunday
+    if (actualDay === 'sunday') {
+        showNotification('No classes on Sunday');
+        return;
+    }
+
     const todayTimetable = document.getElementById(actualDay);
     if (!todayTimetable) return;
 
@@ -87,7 +93,6 @@ function checkClasses() {
     } else if (earliestNextClassInfo && !hasOngoingClass) {
         const timeLeft = formatTimeLeft(earliestNextClassInfo.minutes);
         showNotification(`Next class: ${earliestNextClassInfo.name} at ${earliestNextClassInfo.time} (${timeLeft} left)`);
-
     }
 }
 
