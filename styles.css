@@ -82,17 +82,6 @@ body {
 }
 
 
-/* @media screen and (max-width: 768px) {
-    .color-picker {
-        right: 20px;
-        top: 70px;
-    }
-
-    .color-picker-menu {
-        grid-template-columns: 1fr;
-        width: 200px;
-    }
-} */
 
 .notification {
     background-color: var(--notification-bg);
@@ -144,20 +133,21 @@ body {
 }
 
 h1 {
-    padding: 8px;
+    padding: 4px; /* Reduced padding */
     margin: 0;
     font-size: clamp(20px, 4vw, 28px);
     color: var(--text-primary);
 }
 
 .day-buttons {
-    margin: 10px 0;
+    margin: 5px 0; /* Reduced margin */
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 6px;
     padding: 0 10px;
 }
+
 
 .day-buttons button {
     flex: 1;
@@ -223,7 +213,7 @@ h1 {
 }
 
 table {
-    margin: 0 auto;
+    margin: 5px auto;
     border-collapse: collapse;
     width: 100%;
     max-width: 600px;
@@ -257,7 +247,7 @@ th {
     margin: 5px 0; /* Reduced from 10px */
     font-size: clamp(12px, 2.5vw, 14px);
     color: var(--text-primary);
-    padding: 6px; /* Reduced from 8px */
+    padding: 4px 6px; /* Slightly reduced padding */
     background-color: var(--table-bg);
     border-radius: 20px;
     display: inline-block;
@@ -279,10 +269,11 @@ th {
 
 .timetable-container {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     width: 100%;
-    min-height: 300px;
-    margin-bottom: 5px; /* Reduced from 10px */
+    min-height: 450px;
+    margin-top: 5px; /* Added small top margin */
+    margin-bottom: 5px;
 }
 
 .timetable {
@@ -321,7 +312,15 @@ th {
 
 @media screen and (max-width: 480px) {
     .timetable-container {
+        margin-top: 3px;
         min-height: 450px; /* Ensure consistent height on mobile */
+    }
+    .live-clock {
+        margin: 3px 0; /* Even smaller margin for mobile */
+    }
+
+    .day-buttons {
+        margin: 3px 0; /* Reduced margin for mobile */
     }
 
     table {
