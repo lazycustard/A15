@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A15 Timetable</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span class="theme-icon">☀️</span>
+        <span class="theme-text">Toggle Theme</span>
+    </button>
+    
+    <h1>A15 Timetable</h1>
+    <p style="font-size: small; text-align: center; color: var(--text-secondary);">
+        Note: All times are in 24-hour format for clarity and compatibility.
+    </p>
+    <div class="day-buttons">
+        <button onclick="showTimetable('monday')" id="btn-monday">Monday</button>
+        <button onclick="showTimetable('tuesday')" id="btn-tuesday">Tuesday</button>
+        <button onclick="showTimetable('wednesday')" id="btn-wednesday">Wednesday</button>
+        <button onclick="showTimetable('thursday')" id="btn-thursday">Thursday</button>
+        <button onclick="showTimetable('friday')" id="btn-friday">Friday</button>
+        <button onclick="showTimetable('saturday')" id="btn-saturday">Saturday</button>
+    </div>
+
+    <div class="timetable-container">
+        <div id="monday" class="timetable hidden">
+            <h2>Monday</h2>
+            <table>
+                <tr>
+                    <th>Time</th>
+                    <th>Class</th>
+                    <th>Type</th>
+                    <th>Teacher</th>
+                    <th>Room</th>
+                </tr>
+                <tr>
+                    <td>9:00 - 10:50</td>
+                    <td>SDF</td>
+                    <td>Practical</td>
+                    <td>Dr.Amanpreet Kaur</td>
+                    <td>CL01(ABB3)</td>
+                </tr>
+                <tr>
+                    <td>11:00 - 11:50</td>
+                    <td>PHYSICS</td>
+                    <td>Lecture</td>
+                    <td>Prof.Sandeep Chhoker</td>
+                    <td>FF1(ABB1)</td>
+                </tr>
+                <tr>
+                    <td>13:00 - 14:50</td>
+                    <td>LIFE SKILL</td>
+                    <td>Practical</td>
+                    <td>Dr.Manas</td>
+                    <td>LL</td>
+                </tr>
+                <tr>
+                    <td>15:00 - 15:50</td>
+                    <td>MATHEMATICS</td>
+                    <td>Lecture</td>
+                    <td>Dr.Nisha Shukla</td>
+                    <td>FF1(ABB1)</td>
+                </tr>
+                <tr>
+                    <td>16:00 - 16:50</td>
+                    <td>SDF</td>
+                    <td>Lecture</td>
+                    <td>Dr.Taj Alam</td>
+                    <td>FF1(ABB1)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="tuesday" class="timetable hidden">
+            <h2>Tuesday</h2>
+            <table>
+                <tr>
+                    <th>Time</th>
+                    <th>Class</th>
+                    <th>Type</th>
+                    <th>Teacher</th>
+                    <th>Room</th>
+                </tr>
+                <tr>
+                    <td>9:00 - 11:50</td>
+                    <td>Engineering Drawing</td>
+                    <td>Practical</td>
+                    <td>Mr.Chandan Kumar</td>
+                    <td>CAD2</td>
+                </tr>
+                <tr>
+                    <td>14:00 - 14:50</td>
+                    <td>MATHEMATICS</td>
+                    <td>Lecture</td>
+                    <td>Dr.Nisha Shukla</td>
+                    <td>FF2(ABB1)</td>
+                </tr>
+                <tr>
+                    <td>15:00 - 15:50</td>
+                    <td>SDF</td>
+                    <td>Lecture</td>
+                    <td>Dr.Taj Alam</td>
+                    <td>G1(ABB1)</td>
+                </tr>
+                <tr>
+                    <td>16:00 - 16:50</td>
+                    <td>PHYSICS</td>
+                    <td>Lecture</td>
+                    <td>Prof.Sandeep Chhoker</td>
+                    <td>G1(ABB1)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="wednesday" class="timetable hidden">
+            <h2>Wednesday</h2>
+            <table>
+                <tr>
+                    <th>Time</th>
+                    <th>Class</th>
+                    <th>Type</th>
+                    <th>Teacher</th>
+                    <th>Room</th>
+                </tr>
+                <tr>
+                    <td>9:00 - 9:50</td>
+                    <td>UHV</td>
+                    <td>Lecture</td>
+                    <td>SHS</td>
+                    <td>FF4(ABB1)</td>
+                </tr>
+                <tr>
+                    <td>10:00 - 10:50</td>
+                    <td>PHYSICS</td>
+                    <td>Lecture</td>
+                    <td>Prof.Sandeep Chhoker</td>
+                    <td>G3(ABB1)</td>
+                </tr>
+                <tr>
+                    <td>14:00 - 14:50</td>
+                    <td>MATHEMATICS</td>
+                    <td>Lecture</td>
+                    <td>Dr.Nisha Shukla</td>
+                    <td>G3(ABB1)</td>
+                </tr>
+                <tr>
+                    <td>15:00 - 16:50</td>
+                    <td>PHYSICS</td>
+                    <td>Practical</td>
+                    <td>Dr.Radha Krishna Gopal</td>
+                    <td>PL1(ABB1)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="thursday" class="timetable hidden">
+            <h2>Thursday</h2>
+            <table>
+                <tr>
+                    <th>Time</th>
+                    <th>Class</th>
+                    <th>Type</th>
+                    <th>Teacher</th>
+                    <th>Room</th>
+                </tr>
+                <tr>
+                    <td>11:00 - 11:50</td>
+                    <td>UHV</td>
+                    <td>Tutorial</td>
+                    <td>Dr.Ila Joshi</td>
+                    <td>TS7(ABB1)</td>
+                </tr>
+
+            </table>
+        </div>
+
+        <div id="friday" class="timetable hidden">
+            <h2>Friday</h2>
+            <table>
+                <tr>
+                    <th>Time</th>
+                    <th>Class</th>
+                    <th>Type</th>
+                    <th>Teacher</th>
+                    <th>Room</th>
+                </tr>
+                <tr>
+                    <td>10:00 - 10:50</td>
+                    <td>UHV</td>
+                    <td>Lecture</td>
+                    <td>SHS</td>
+                    <td>FF4(ABB1)</td>
+                </tr>
+                <tr>
+                    <td>11:00 - 11:50</td>
+                    <td>PHYSICS</td>
+                    <td>Tutorial</td>
+                    <td>Dr.Bhupesh Chandra Joshi</td>
+                    <td>TS11(ABB1)</td>
+                </tr>
+                <tr>
+                    <td>15:00 - 15:50</td>
+                    <td>MATHEMATICS</td>
+                    <td>Tutorial</td>
+                    <td>Dr.Yogesh Gupta</td>
+                    <td>TS6(ABB1)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="saturday" class="timetable hidden">
+            <h2>Saturday</h2>
+            <table>
+                <tr>
+                    <th>Time</th>
+                    <th>Class</th>
+                    <th>Type</th>
+                    <th>Teacher</th>
+                    <th>Room</th>
+                </tr>
+                <tr>
+                    <td>11:00 - 11:50</td>
+                    <td>SDF</td>
+                    <td>Lecture</td>
+                    <td>Dr.Taj Alam</td>
+                    <td>G1(ABB1)</td>
+                </tr>
+                <tr>
+                    <td>12:00 - 12:50</td>
+                    <td>SDF</td>
+                    <td>Tutorial</td>
+                    <td>Ms.Neha</td>
+                    <td>TS6(ABB1)</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="live-clock" id="live-clock"></div>
+    <div class="notification" id="notification"></div>
+    <div class="creator">Made with <span class="heart">♥</span></div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
