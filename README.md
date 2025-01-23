@@ -9,7 +9,7 @@ An interactive timetable web application with the following features:
 - Responsive design
 
 ## Usage
-Visit the live site at: https://YOUR_USERNAME.github.io/REPOSITORY_NAME/
+Visit the live site at: (https://jinx-web.github.io/A15/)
 
 ## Features
 - View class schedules for each day
