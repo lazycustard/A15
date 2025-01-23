@@ -335,23 +335,27 @@ function addClassClickHandlers() {
     const tables = document.querySelectorAll('.timetable table');
     const cleanText = (text) => text.trim().toLowerCase();
 
-
     tables.forEach(table => {
         const rows = table.querySelectorAll('tr');
         for (let i = 1; i < rows.length; i++) { // Skip header row
             const row = rows[i];
             const classCell = row.cells[1];
+
+            // Special handling for holiday rows
+            if (!classCell || cleanText(classCell.textContent) === 'holiday') {
+                row.style.cursor = 'default';
+                continue;
+            }
+
             const typeCell = row.cells[2];
 
             if (classCell && typeCell) {
                 row.style.cursor = 'pointer';
                 row.addEventListener('click', () => {
-                    const className = cleanText(classCell.textContent); // Sanitize class name
-                    const type = cleanText(typeCell.textContent);       // Sanitize type
-                    const teacherName = cleanText(row.cells[3].textContent); // Sanitize teacher name
+                    const className = cleanText(classCell.textContent);
+                    const type = cleanText(typeCell.textContent);
+                    const teacherName = cleanText(row.cells[3].textContent);
                     const nextClass = findNextOccurrence(className, type, teacherName);
-
-
 
                     if (nextClass) {
                         let message = '';
@@ -371,6 +375,7 @@ function addClassClickHandlers() {
         }
     });
 }
+
 window.onload = () => {
     loadTheme();
     cleanupAllTimetables();
