@@ -1,11 +1,71 @@
+// Utility functions for text manipulation and formatting
+const cleanText = (text) => text.trim().toLowerCase();
+
+// Global variables for timetable configuration
 let currentDay = "monday";
 let isAnimating = false;
 const dayOrder = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-const cleanText = (text) => text.trim().toLowerCase();
 const skyBlueColor = {
     light: 'rgba(176, 196, 222, 0.2)',
     dark: 'rgba(126, 146, 172, 0.2)'
 };
+
+/**
+ * Initializes the timetable when the page loads
+ * Sets up initial state and event handlers
+ */
+function initializeTimetable() {
+    console.log('Initializing timetable...');
+    
+    // Get the current day
+    const now = new Date();
+    const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const today = days[now.getDay()];
+    
+    console.log('Current day:', today); // Debug log
+
+    // First hide all timetables
+    document.querySelectorAll('.timetable').forEach(table => {
+        table.classList.add('hidden');
+        table.classList.remove('active');
+        table.style.transform = '';
+        table.style.opacity = '';
+        console.log('Hidden timetable:', table.id); // Debug log
+    });
+
+    // Try to show today's timetable, fallback to Monday if not available
+    let targetDay = today;
+    let targetTable = document.getElementById(today);
+    
+    console.log('Target table found:', targetTable ? 'yes' : 'no'); // Debug log
+
+    // If today's timetable doesn't exist or it's Sunday, show Monday's timetable
+    if (!targetTable || today === 'sunday') {
+        targetDay = 'monday';
+        targetTable = document.getElementById('monday');
+        console.log('Falling back to Monday'); // Debug log
+    }
+
+    if (targetTable) {
+        targetTable.classList.remove('hidden');
+        targetTable.classList.add('active');
+        targetTable.style.transform = 'translateX(0)';
+        targetTable.style.opacity = '1';
+        console.log(`Showing ${targetDay}'s timetable`); // Debug log
+    } else {
+        console.error('Failed to find target table!'); // Error log
+    }
+
+    // Set current day
+    currentDay = targetDay;
+    console.log('Current day set to:', currentDay); // Debug log
+
+    // Update active button
+    updateActiveButton();
+
+    // Run initial class check
+    checkClasses();
+}
 
 function getTimeInMinutes(timeStr) {
     const [hours, minutes] = timeStr.split(':').map(Number);
@@ -109,8 +169,9 @@ function showNotification(message) {
 function checkAndSwitchToNextDay(now) {
     const currentHour = now.getHours();
     const currentMinutes = now.getMinutes();
-
-    if (currentHour >= 23 || (currentHour === 0 && currentMinutes < 60)) {
+    
+    // Only switch after all classes are done and it's past midnight
+    if (currentHour === 0 && currentMinutes < 60) {
         const currentIndex = dayOrder.indexOf(currentDay);
         const nextDayIndex = (currentIndex + 1) % dayOrder.length;
         const nextDay = dayOrder[nextDayIndex];
@@ -125,16 +186,18 @@ function checkAndSwitchToNextDay(now) {
 function showTimetable(day) {
     if (day === currentDay || isAnimating) return;
 
-    isAnimating = true; 
+    isAnimating = true;
+    console.log('Switching to:', day);
 
     const currentTimetable = document.getElementById(currentDay);
     const nextTimetable = document.getElementById(day);
 
     if (!currentTimetable || !nextTimetable) {
-        isAnimating = false; 
+        isAnimating = false;
         return;
     }
 
+    // Hide all other timetables
     document.querySelectorAll('.timetable').forEach(table => {
         if (table.id !== currentDay && table.id !== day) {
             table.classList.add('hidden');
@@ -147,16 +210,15 @@ function showTimetable(day) {
     const nextIndex = dayOrder.indexOf(day);
     const slideRight = nextIndex > currentIndex;
 
+    // Animation setup
     currentTimetable.style.transition = 'none';
     nextTimetable.style.transition = 'none';
-
-    void currentTimetable.offsetWidth;
-    void nextTimetable.offsetWidth;
-
+    
     nextTimetable.classList.remove('hidden');
     nextTimetable.style.transform = `translateX(${slideRight ? '100%' : '-100%'})`;
     nextTimetable.style.opacity = '0';
 
+    // Trigger animation
     requestAnimationFrame(() => {
         currentTimetable.style.transition = 'transform 0.5s ease-in-out, opacity 0.5s ease-in-out';
         nextTimetable.style.transition = 'transform 0.5s ease-in-out, opacity 0.5s ease-in-out';
@@ -174,8 +236,8 @@ function showTimetable(day) {
                 currentDay = day;
                 updateActiveButton();
                 checkClasses();
-                isAnimating = false; 
-            }, 500); 
+                isAnimating = false;
+            }, 500);
         });
     });
 }
@@ -244,38 +306,29 @@ function loadTheme() {
     document.documentElement.style.setProperty('--ongoing-class-bg', color);
 }
 
-
-// Show current day's timetable
-function showTodayTimetable() {
-    const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-    const today = new Date().getDay();
-    const dayName = days[today];
-
-    // Show appropriate timetable based on current day
-    if (document.getElementById(dayName)) {
-        showTimetable(dayName);
-    } else {
-        showTimetable('monday'); // Default to Monday if today is Sunday
-    }
-}
-
+/**
+ * Finds the next occurrence of a class based on class name, type, and teacher
+ * @param {string} className - Name of the class to find
+ * @param {string} type - Type of the class (lecture, lab, etc)
+ * @param {string} teacherName - Name of the teacher
+ * @returns {Object|null} Next class occurrence info or null if not found
+ */
 function findNextOccurrence(className, type, teacherName) {
-    const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
     const now = new Date();
-    const currentDay = now.getDay();
-    const currentTime = now.getHours() * 60 + now.getMinutes(); // Current time in minutes
-
+    const currentDay = getCurrentDay();
+    const currentTimeInMinutes = now.getHours() * 60 + now.getMinutes();
+    
+    let foundInCurrentDay = false;
+    
     let nextClassInfo = null;
     let closestMinutes = Infinity;
     let foundNext = false;
     let completedFirstWeek = false;
 
-    const cleanText = (text) => text.trim().toLowerCase();
-
     // Check for 14 days (2 weeks) to ensure we find the next occurrence
     for (let daysChecked = 0; daysChecked < 14; daysChecked++) {
         const checkDay = (currentDay + daysChecked) % 7; // Wrap around the week
-        const dayTable = document.getElementById(days[checkDay]);
+        const dayTable = document.getElementById(dayOrder[checkDay]);
 
         if (dayTable) {
             const rows = dayTable.querySelectorAll('tr');
@@ -296,7 +349,7 @@ function findNextOccurrence(className, type, teacherName) {
                     const totalMinutes = startTime + daysChecked * 24 * 60;
 
                     // For same day, only consider future classes
-                    if (daysChecked === 0 && startTime <= currentTime) {
+                    if (daysChecked === 0 && startTime <= currentTimeInMinutes) {
                         continue;
                     }
 
@@ -304,7 +357,7 @@ function findNextOccurrence(className, type, teacherName) {
                     if (!foundNext || totalMinutes < closestMinutes) {
                         closestMinutes = totalMinutes;
                         nextClassInfo = {
-                            day: days[checkDay],
+                            day: dayOrder[checkDay],
                             time: timeCell.textContent,
                             room: row.cells[4].textContent,
                             teacher: teacherCell.textContent,
@@ -331,10 +384,12 @@ function findNextOccurrence(className, type, teacherName) {
     return nextClassInfo;
 }
 
+/**
+ * Adds click handlers to class rows in the timetable
+ * Shows information about the next occurrence of the clicked class
+ */
 function addClassClickHandlers() {
     const tables = document.querySelectorAll('.timetable table');
-    const cleanText = (text) => text.trim().toLowerCase();
-
 
     tables.forEach(table => {
         const rows = table.querySelectorAll('tr');
@@ -350,8 +405,6 @@ function addClassClickHandlers() {
                     const type = cleanText(typeCell.textContent);       // Sanitize type
                     const teacherName = cleanText(row.cells[3].textContent); // Sanitize teacher name
                     const nextClass = findNextOccurrence(className, type, teacherName);
-
-
 
                     if (nextClass) {
                         let message = '';
@@ -371,16 +424,51 @@ function addClassClickHandlers() {
         }
     });
 }
-window.onload = () => {
-    loadTheme();
-    cleanupAllTimetables();
-    showTodayTimetable();
-    updateClock();
-    checkClasses();
-    addClassClickHandlers();
 
-    setInterval(() => {
+// Add this new function to help with testing
+function testDayInitialization(dayToTest) {
+    console.log(`Testing initialization for ${dayToTest}...`);
+    
+    // Mock the Date object
+    const RealDate = Date;
+    const mockDate = new Date();
+    mockDate.setDate(mockDate.getDate() + (dayToTest === 'sunday' ? 0 : ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'].indexOf(dayToTest) - mockDate.getDay()));
+    
+    global.Date = class extends RealDate {
+        constructor() {
+            super();
+            return mockDate;
+        }
+    };
+
+    // Run initialization
+    initializeTimetable();
+
+    // Restore the real Date object
+    global.Date = RealDate;
+}
+
+// Modify window.onload to include error handling
+window.onload = () => {
+    try {
+        console.log('Window loaded');
+        
+        // Initialize theme first
+        loadTheme();
+        
+        // Initialize timetable
+        initializeTimetable();
+        
+        // Initialize other components
         updateClock();
-        checkClasses();
-    }, 60000); 
+        addClassClickHandlers();
+
+        // Set up intervals for updates
+        setInterval(() => {
+            updateClock();
+            checkClasses();
+        }, 60000);
+    } catch (error) {
+        console.error('Error during initialization:', error);
+    }
 };

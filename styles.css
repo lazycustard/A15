@@ -109,8 +109,8 @@ body {
 
 
 .creator {
-    margin: 8px 0;
-    font-size: clamp(11px, 2vw, 13px);
+    margin: 10px 0 20px;
+    font-size: clamp(12px, 2.5vw, 14px);
     color: var(--text-secondary);
 }
 
@@ -175,11 +175,13 @@ h1 {
 
 .timetable-container {
     position: relative;
-    overflow: visible; /* Changed from hidden to allow content to be fully visible */
+    overflow: visible;
     width: 100%;
-    min-height: 450px; /* Increased from 300px to accommodate all classes */
+    min-height: 450px;
+    margin-top: 5px;
     margin-bottom: 5px;
 }
+
 
 .timetable {
     position: absolute;
@@ -191,7 +193,13 @@ h1 {
     opacity: 0;
     padding: 0 10px;
     box-sizing: border-box;
-    min-height: 450px; /* Match container height */
+    min-height: 450px;
+}
+
+.timetable-note {
+    font-size: small;
+    text-align: center;
+    color: var(--text-secondary);
 }
 
 .timetable.active {
@@ -261,20 +269,20 @@ th {
     transition: background-color var(--transition-speed) ease;
 }
 
-.creator {
+/* .creator {
     margin: 10px 0 20px;
     font-size: clamp(12px, 2.5vw, 14px);
     color: var(--text-secondary);
-}
+} */
 
-.timetable-container {
+/*  .timetable-container {
     position: relative;
     overflow: visible;
     width: 100%;
     min-height: 450px;
-    margin-top: 5px; /* Added small top margin */
+    margin-top: 5px; /* Added small top margin 
     margin-bottom: 5px;
-}
+} */
 
 .timetable {
     position: absolute;
@@ -286,7 +294,7 @@ th {
     opacity: 0;
     padding: 0 10px;
     box-sizing: border-box;
-}
+} */
 
 .timetable.active {
     transform: translateX(0);
