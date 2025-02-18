@@ -112,7 +112,7 @@ function checkClasses() {
     let allClassesEnded = true;
     let earliestNextClass = Infinity;
     let earliestNextClassInfo = null;
-    let lastClassEndTime = -1
+    let lastClassEndTime = -1;
 
     document.querySelectorAll('.timetable tr').forEach(row => {
         row.classList.remove('ongoing');
