@@ -169,11 +169,20 @@ function showNotification(message) {
     }, 10000); 
 }
 
+
 function checkAndSwitchToNextDay(now, lastClassEndTime) {
     const currentMinutes = now.getHours() * 60 + now.getMinutes();
+console.log('Current Minutes:', currentMinutes);
+console.log('Last Class End Time:', lastClassEndTime);
+
+    //if (currentMinutes > lastClassEndMinutes) {
+    //currentDay = (currentDay + 1) % 7; // Move to the next day
+    //console.log("Switched to the next day:", currentDay);
+    // Logic to update the timetable display
+}
     
     // Only switch after all classes are done and it's past midnight
-    if (currentMinutes >= lastClassEndTime) {
+    if (currentMinutes > lastClassEndTime) {
         const currentIndex = dayOrder.indexOf(currentDay);
         const nextDayIndex = (currentIndex + 1) % dayOrder.length;
         const nextDay = dayOrder[nextDayIndex];
