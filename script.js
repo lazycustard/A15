@@ -59,7 +59,7 @@ function initializeTimetable() {
     // Set current day
     currentDay = targetDay;
     console.log('Current day set to:', currentDay); // Debug log
-
+//hello
     // Update active button
     updateActiveButton();
 
