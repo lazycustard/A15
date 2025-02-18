@@ -112,6 +112,7 @@ function checkClasses() {
     let allClassesEnded = true;
     let earliestNextClass = Infinity;
     let earliestNextClassInfo = null;
+    let lastClassEndTime = -1
 
     document.querySelectorAll('.timetable tr').forEach(row => {
         row.classList.remove('ongoing');
@@ -125,6 +126,8 @@ function checkClasses() {
         const [startTimeStr, endTimeStr] = timeCell.textContent.split(' - ');
         const startTime = getTimeInMinutes(startTimeStr);
         const endTime = getTimeInMinutes(endTimeStr);
+
+        lastClassEndTime = Math.max(lastClassEndTime, endTime);
 
         if (endTime > currentMinutes) {
             allClassesEnded = false;
@@ -166,12 +169,11 @@ function showNotification(message) {
     }, 10000); 
 }
 
-function checkAndSwitchToNextDay(now) {
-    const currentHour = now.getHours();
-    const currentMinutes = now.getMinutes();
+function checkAndSwitchToNextDay(now, lastClassEndTime) {
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
     
     // Only switch after all classes are done and it's past midnight
-    if (currentHour === 0 && currentMinutes < 60) {
+    if (currentMinutes >= lastClassEndTime) {
         const currentIndex = dayOrder.indexOf(currentDay);
         const nextDayIndex = (currentIndex + 1) % dayOrder.length;
         const nextDay = dayOrder[nextDayIndex];
