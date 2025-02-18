@@ -169,18 +169,12 @@ function showNotification(message) {
     }, 10000); 
 }
 
-
-function checkAndSwitchToNextDay(now, lastClassEndTime) {
+// Define the checkAndSwitchToNextDay function
+function checkAndSwitchToNextDay(now, lastClassEndTime, currentDay, dayOrder) {
     const currentMinutes = now.getHours() * 60 + now.getMinutes();
-console.log('Current Minutes:', currentMinutes);
-console.log('Last Class End Time:', lastClassEndTime);
+    console.log('Current Minutes:', currentMinutes);
+    console.log('Last Class End Time:', lastClassEndTime);
 
-    //if (currentMinutes > lastClassEndMinutes) {
-    //currentDay = (currentDay + 1) % 7; // Move to the next day
-    //console.log("Switched to the next day:", currentDay);
-    // Logic to update the timetable display
-}
-    
     // Only switch after all classes are done and it's past midnight
     if (currentMinutes > lastClassEndTime) {
         const currentIndex = dayOrder.indexOf(currentDay);
@@ -193,6 +187,15 @@ console.log('Last Class End Time:', lastClassEndTime);
         }
     }
 }
+
+// Array for days of the week
+const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+// Dynamically get the current day
+const currentDay = new Date().toLocaleString('en-us', { weekday: 'long' }); // Example: 'Monday'
+
+// Call the function to check and switch to the next day if needed
+checkAndSwitchToNextDay(new Date(), 540, currentDay, dayOrder);
 
 function showTimetable(day) {
     if (day === currentDay || isAnimating) return;
