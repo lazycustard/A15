@@ -103,7 +103,7 @@ function checkClasses() {
         showNotification('No classes on Sunday');
         return;
     }
-
+//
     const todayTimetable = document.getElementById(actualDay);
     if (!todayTimetable) return;
 
