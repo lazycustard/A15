@@ -9,7 +9,9 @@ const skyBlueColor = {
     light: 'rgba(176, 196, 222, 0.2)',
     dark: 'rgba(126, 146, 172, 0.2)'
 };
-
+function getCurrentDay() {
+    return currentDay; // Returns the stored current day
+}
 /**
  * Initializes the timetable when the page loads
  * Sets up initial state and event handlers
@@ -59,7 +61,7 @@ function initializeTimetable() {
     // Set current day
     currentDay = targetDay;
     console.log('Current day set to:', currentDay); // Debug log
-//hello
+
     // Update active button
     updateActiveButton();
 
@@ -103,7 +105,7 @@ function checkClasses() {
         showNotification('No classes on Sunday');
         return;
     }
-//
+
     const todayTimetable = document.getElementById(actualDay);
     if (!todayTimetable) return;
 
@@ -112,7 +114,7 @@ function checkClasses() {
     let allClassesEnded = true;
     let earliestNextClass = Infinity;
     let earliestNextClassInfo = null;
-    let lastClassEndTime = -1;
+    let lastClassEndTime = -1
 
     document.querySelectorAll('.timetable tr').forEach(row => {
         row.classList.remove('ongoing');
@@ -152,7 +154,7 @@ function checkClasses() {
 
     if (allClassesEnded && !hasOngoingClass) {
         showNotification('All classes have ended for today');
-        checkAndSwitchToNextDay(now);
+        checkAndSwitchToNextDay(now , lastClassEndTime, currentDay, dayOrder);
     } else if (earliestNextClassInfo && !hasOngoingClass) {
         const timeLeft = formatTimeLeft(earliestNextClassInfo.minutes);
         showNotification(`Next class: ${earliestNextClassInfo.name} at ${earliestNextClassInfo.time} (${timeLeft} left)`);
@@ -168,34 +170,28 @@ function showNotification(message) {
         notificationElement.classList.remove('show');
     }, 10000); 
 }
-
-// Define the checkAndSwitchToNextDay function
-function checkAndSwitchToNextDay(now, lastClassEndTime, currentDay, dayOrder) {
+// Add this helper function for consistent formatting
+function formatDayName(day) {
+    return day.charAt(0).toUpperCase() + day.slice(1).toLowerCase();
+}
+function checkAndSwitchToNextDay(now, lastClassEndTime) {
     const currentMinutes = now.getHours() * 60 + now.getMinutes();
-    console.log('Current Minutes:', currentMinutes);
-    console.log('Last Class End Time:', lastClassEndTime);
-
+    
     // Only switch after all classes are done and it's past midnight
     if (currentMinutes > lastClassEndTime) {
-        const currentIndex = dayOrder.indexOf(currentDay);
+        const currentIndex = dayOrder.indexOf(currentDay.toLowerCase());
         const nextDayIndex = (currentIndex + 1) % dayOrder.length;
         const nextDay = dayOrder[nextDayIndex];
 
         if (nextDay !== currentDay) {
             showTimetable(nextDay);
-            showNotification(`Switched to ${nextDay.charAt(0).toUpperCase() + nextDay.slice(1)}'s timetable`);
+            
+            showNotification(`Switched to ${formatDayName(currentDay)}'s timetable`);
+
+
         }
     }
 }
-
-// Array for days of the week
-const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
-// Dynamically get the current day
-const currentDay = new Date().toLocaleString('en-us', { weekday: 'long' }); // Example: 'Monday'
-
-// Call the function to check and switch to the next day if needed
-checkAndSwitchToNextDay(new Date(), 540, currentDay, dayOrder);
 
 function showTimetable(day) {
     if (day === currentDay || isAnimating) return;
