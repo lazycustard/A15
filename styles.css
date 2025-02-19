@@ -269,6 +269,16 @@ th {
     transition: background-color var(--transition-speed) ease;
 }
 
+.no-classes td {
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    color: #6c757d;
+    font-style: italic;
+    font-weight: bold; 
+    font-size: 18px; 
+}
+
 /* .creator {
     margin: 10px 0 20px;
     font-size: clamp(12px, 2.5vw, 14px);
