@@ -137,9 +137,16 @@ td:nth-child(3) {
 }
 
 /* ====== EMPTY SLOTS ====== */
-td:has(span:contains("~")) {
+td.empty {
   color: var(--muted);
 }
+}
+/* Fix subject visibility in dark mode */
+[data-theme="dark"] td:nth-child(3) {
+  color: var(--text);
+  font-weight: 600;
+}
+
 
 /* ====== CREATOR ====== */
 .creator {
